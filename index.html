@@ -1133,15 +1133,15 @@
 
     let trail = [];
     document.addEventListener('mousemove', e => {
-      trail.push({ x: e.clientX, y: e.clientY, age: 0 });
-      if (trail.length > 28) trail.shift();
+      trail.push({ x: e.clientX, y: e.clientY });
+      if (trail.length > 10) trail.shift();
     });
 
     function drawTrail() {
       tCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
       trail.forEach((p, i) => {
-        const alpha = (i / trail.length) * 0.28;
-        const radius = (i / trail.length) * 10 + 2;
+        const alpha = (i / trail.length) * 0.12;
+        const radius = (i / trail.length) * 5 + 1;
         tCtx.beginPath();
         tCtx.arc(p.x, p.y, radius, 0, Math.PI * 2);
         tCtx.fillStyle = `rgba(210, 90, 20, ${alpha})`;
