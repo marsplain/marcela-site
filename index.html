@@ -693,16 +693,102 @@
     @media (max-width: 480px) {
       .pcards { grid-template-columns: 1fr; }
     }
+
+    /* ── Space mode ── */
+    #star-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+
+    body.space-mode #star-canvas { opacity: 1; }
+    body.space-mode { background: #000; }
+    body.space-mode header { background: #000; border-bottom-color: #333; }
+    body.space-mode #bottom-bar { background: #000; border-top-color: #333; }
+    body.space-mode .content-section,
+    body.space-mode .c-inner::before { --cbg: #000; background: #000; }
+    body.space-mode { --cbg: #000; --ctext: #ffffff; --cdim: #666; }
+    body.space-mode .c-col,
+    body.space-mode .roles-list,
+    body.space-mode .role-trigger,
+    body.space-mode .role-body-inner,
+    body.space-mode .lore-list,
+    body.space-mode .contact-list,
+    body.space-mode .skills-tbl,
+    body.space-mode .built-list,
+    body.space-mode .edu-block,
+    body.space-mode .small-list,
+    body.space-mode .two-col .col-unit { background: #000; }
+
+    /* ── Space toggle ── */
+    #space-toggle {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      user-select: none;
+      margin-right: 16px;
+    }
+
+    #space-toggle-track {
+      width: 28px;
+      height: 14px;
+      border-radius: 7px;
+      border: 1px solid var(--ctext);
+      position: relative;
+      transition: background 0.3s, border-color 0.3s;
+      flex-shrink: 0;
+    }
+
+    #space-toggle-thumb {
+      position: absolute;
+      top: 2px; left: 2px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--ctext);
+      transition: transform 0.3s, background 0.3s;
+    }
+
+    body.space-mode #space-toggle-track { border-color: #fff; background: #111; }
+    body.space-mode #space-toggle-thumb { transform: translateX(14px); background: #fff; }
+
+    #space-toggle-label {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--cdim);
+    }
+
+    /* ── Cursor trail ── */
+    #cursor-trail-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
   </style>
 </head>
 <body>
 
+  <canvas id="star-canvas"></canvas>
+  <canvas id="cursor-trail-canvas"></canvas>
+
   <!-- Header -->
   <header>
     <div class="logo-wrap">
+      <div id="space-toggle" onclick="toggleSpace()">
+        <div id="space-toggle-track"><div id="space-toggle-thumb"></div></div>
+        <span id="space-toggle-label">🚀</span>
+      </div>
       <div class="logo-text">
         <div class="logo-hover-wrap">
-          <span class="logo-name">Marcela Bustillos</span>
+          <span class="logo-name" onclick="closeSection()" style="cursor:pointer;">Marcela Bustillos</span>
           <img class="logo-hover-photo" src="IMG_1278.jpg" alt="Marcela Bustillos">
         </div>
         <span class="logo-sub">Strategist · Operator · Marketer</span>
@@ -948,7 +1034,8 @@
   </div>
 
   <script>
-    const sections = ['lore','work','education','skills','contact'];
+    // ── Nav ──
+    const sections   = ['lore','work','education','skills','contact'];
     const homeView    = document.getElementById('home-view');
     const contentView = document.getElementById('content-view');
     const backBtn     = document.getElementById('back-btn');
@@ -958,10 +1045,8 @@
       const idx = sections.indexOf(id);
       if (idx < 0) return;
       current = idx;
-
       document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
       document.getElementById('section-' + id).classList.add('active');
-
       homeView.classList.add('hidden');
       contentView.classList.add('active');
       contentView.scrollTop = 0;
@@ -993,6 +1078,79 @@
       if (e.key === 'ArrowUp'   || e.key === 'ArrowLeft')  navPrev();
       if (e.key === 'Escape') closeSection();
     });
+
+    // ── Stars ──
+    const starCanvas = document.getElementById('star-canvas');
+    const sCtx = starCanvas.getContext('2d');
+    let stars = [], spaceOn = false, animFrame;
+
+    function resizeStars() {
+      starCanvas.width  = window.innerWidth;
+      starCanvas.height = window.innerHeight;
+    }
+
+    function initStars() {
+      resizeStars();
+      stars = Array.from({length: 220}, () => ({
+        x: Math.random() * starCanvas.width,
+        y: Math.random() * starCanvas.height,
+        r: Math.random() * 1.2 + 0.2,
+        speed: Math.random() * 0.25 + 0.05,
+        opacity: Math.random() * 0.7 + 0.3
+      }));
+    }
+
+    function drawStars() {
+      sCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
+      stars.forEach(s => {
+        sCtx.beginPath();
+        sCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        sCtx.fillStyle = `rgba(255,255,255,${s.opacity})`;
+        sCtx.fill();
+        s.y += s.speed;
+        if (s.y > starCanvas.height) { s.y = 0; s.x = Math.random() * starCanvas.width; }
+      });
+      if (spaceOn) animFrame = requestAnimationFrame(drawStars);
+    }
+
+    function toggleSpace() {
+      spaceOn = !spaceOn;
+      document.body.classList.toggle('space-mode', spaceOn);
+      if (spaceOn) { initStars(); drawStars(); }
+      else { cancelAnimationFrame(animFrame); sCtx.clearRect(0, 0, starCanvas.width, starCanvas.height); }
+    }
+
+    window.addEventListener('resize', () => { if (spaceOn) initStars(); });
+
+    // ── Cursor trail ──
+    const trailCanvas = document.getElementById('cursor-trail-canvas');
+    const tCtx = trailCanvas.getContext('2d');
+    trailCanvas.width  = window.innerWidth;
+    trailCanvas.height = window.innerHeight;
+    window.addEventListener('resize', () => {
+      trailCanvas.width  = window.innerWidth;
+      trailCanvas.height = window.innerHeight;
+    });
+
+    let trail = [];
+    document.addEventListener('mousemove', e => {
+      trail.push({ x: e.clientX, y: e.clientY, age: 0 });
+      if (trail.length > 28) trail.shift();
+    });
+
+    function drawTrail() {
+      tCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+      trail.forEach((p, i) => {
+        const alpha = (i / trail.length) * 0.28;
+        const radius = (i / trail.length) * 10 + 2;
+        tCtx.beginPath();
+        tCtx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+        tCtx.fillStyle = `rgba(210, 90, 20, ${alpha})`;
+        tCtx.fill();
+      });
+      requestAnimationFrame(drawTrail);
+    }
+    drawTrail();
   </script>
 
 </body>
