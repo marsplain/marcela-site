@@ -731,7 +731,6 @@
       gap: 7px;
       cursor: pointer;
       user-select: none;
-      margin-right: 16px;
     }
 
     #space-toggle-track {
@@ -782,10 +781,6 @@
   <!-- Header -->
   <header>
     <div class="logo-wrap">
-      <div id="space-toggle" onclick="toggleSpace()">
-        <div id="space-toggle-track"><div id="space-toggle-thumb"></div></div>
-        <span id="space-toggle-label">🚀</span>
-      </div>
       <div class="logo-text">
         <div class="logo-hover-wrap">
           <span class="logo-name" onclick="closeSection()" style="cursor:pointer;">Marcela Bustillos</span>
@@ -796,6 +791,10 @@
     </div>
     <nav>
       <a href="https://linkedin.com/in/marcela-bustillos" target="_blank">LinkedIn</a>
+      <div id="space-toggle" onclick="toggleSpace()">
+        <div id="space-toggle-track"><div id="space-toggle-thumb"></div></div>
+        <span id="space-toggle-label">🚀</span>
+      </div>
     </nav>
   </header>
 
