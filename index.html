@@ -681,8 +681,82 @@
       z-index: 99;
     }
 
+    /* ── Work example cards ── */
+    .wcards-label {
+      font-family: var(--font-mono);
+      font-size: var(--fs);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--cdim);
+      margin: 24px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .wcards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(0,0,0,0.1);
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .wcard {
+      background: var(--cbg);
+      padding: 14px 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .wcard-tag {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--cdim);
+    }
+
+    .wcard-name {
+      font-family: var(--font-reg);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      color: var(--ctext);
+      margin-top: 1px;
+    }
+
+    .wcard-desc {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--cdim);
+      line-height: 1.5;
+      margin-top: 3px;
+      flex: 1;
+    }
+
+    .wcard-links {
+      display: flex;
+      gap: 10px;
+      margin-top: 9px;
+      flex-wrap: wrap;
+    }
+
+    .wcard-link {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.04em;
+      color: var(--ctext);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .wcard-link:hover { color: var(--chover); }
+
     /* ── Responsive ── */
     @media (max-width: 760px) {
+      .wcards { grid-template-columns: repeat(2, 1fr); }
       .pcards { grid-template-columns: 1fr 1fr; }
       .two-col { grid-template-columns: 1fr; gap: 20px; }
       .c-inner::before { display: none; }
@@ -694,6 +768,7 @@
 
     @media (max-width: 480px) {
       .pcards { grid-template-columns: 1fr; }
+      .wcards { grid-template-columns: 1fr; }
     }
 
     /* ── Space mode ── */
@@ -725,6 +800,9 @@
     body.space-mode .edu-block,
     body.space-mode .small-list,
     body.space-mode .two-col .col-unit { background: #000; }
+    body.space-mode .wcard { background: #000; }
+    body.space-mode .wcards { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.1); }
+    body.space-mode .wcards-label { border-bottom-color: rgba(255,255,255,0.1); }
 
     /* ── Space toggle ── */
     #space-toggle {
@@ -852,6 +930,54 @@
                   <li><strong>Research &amp; Intelligence</strong> — Own competitive analysis, onchain data, and performance analytics using Metabase, Mixpanel, and Dune; translate insights into campaign decisions and partner strategy in collaboration with product and engineering.</li>
                   <li><strong>Brand &amp; Go-to-Market</strong> — Build and own Mayan's marketing function as sole and founding marketer, developing positioning, messaging, creative, and go-to-market strategy across all major product launches including Mayan 2.0, which reached 500K+ impressions at launch.</li>
                 </ul>
+                <div class="wcards-label">Selected Work</div>
+                <div class="wcards">
+                  <div class="wcard">
+                    <div class="wcard-tag">Launch</div>
+                    <div class="wcard-name">Mayan 2.0</div>
+                    <div class="wcard-desc">Full protocol redesign — new UI, expanded chain support, and a multi-channel launch that reached 500K+ impressions.</div>
+                    <div class="wcard-links">
+                      <a class="wcard-link" href="https://mayan.finance/blog/meet-mayan-2-0" target="_blank">Blog ↗</a>
+                      <a class="wcard-link" href="https://x.com/mayan/status/2036443872793157988?s=20" target="_blank">Announcement ↗</a>
+                      <a class="wcard-link" href="https://x.com/solana/status/2036477724236070964?s=20" target="_blank">Solana ↗</a>
+                    </div>
+                  </div>
+                  <div class="wcard">
+                    <div class="wcard-tag">Partnership</div>
+                    <div class="wcard-name">Mayan x MetaMask</div>
+                    <div class="wcard-desc">Integrated Mayan into crypto's most widely used wallet, bringing cross-chain swaps natively inside MetaMask.</div>
+                    <div class="wcard-links">
+                      <a class="wcard-link" href="https://mayan.finance/blog/mayan-powers-faster-cross-chain-swaps-inside-metamask" target="_blank">Blog ↗</a>
+                      <a class="wcard-link" href="https://x.com/mayan/status/2000989982715207871" target="_blank">Announcement ↗</a>
+                      <a class="wcard-link" href="https://x.com/MetaMask/status/2036494113793868059?s=20" target="_blank">MetaMask ↗</a>
+                    </div>
+                  </div>
+                  <div class="wcard">
+                    <div class="wcard-tag">Ecosystem</div>
+                    <div class="wcard-name">Mayan x Monad</div>
+                    <div class="wcard-desc">Day-one cross-chain partner for Monad's mainnet launch — coordinated ecosystem presence and co-marketing across the launch window.</div>
+                    <div class="wcard-links">
+                      <a class="wcard-link" href="https://mayan.finance/blog/monad-is-live-on-mayan" target="_blank">Blog ↗</a>
+                      <a class="wcard-link" href="https://x.com/mayan/status/1992254110381306219?s=20" target="_blank">Announcement ↗</a>
+                    </div>
+                  </div>
+                  <div class="wcard">
+                    <div class="wcard-tag">Thought Leadership</div>
+                    <div class="wcard-name">2025 Year in Review</div>
+                    <div class="wcard-desc">Mayan's largest growth year — a look at cross-chain movement and the thesis that connected chains win.</div>
+                    <div class="wcard-links">
+                      <a class="wcard-link" href="https://mayan.finance/blog/2025-in-review-connected-chains-win" target="_blank">Read ↗</a>
+                    </div>
+                  </div>
+                  <div class="wcard">
+                    <div class="wcard-tag">Milestone</div>
+                    <div class="wcard-name">2M Users</div>
+                    <div class="wcard-desc">Celebrated Mayan reaching 2 million unique users — a community moment tied to the Mayan 2.0 momentum.</div>
+                    <div class="wcard-links">
+                      <a class="wcard-link" href="https://x.com/mayan/status/1975219457502183583" target="_blank">Post ↗</a>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div></div></div>
           </div>
